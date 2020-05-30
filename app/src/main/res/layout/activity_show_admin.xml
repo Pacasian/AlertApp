@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context=".ShowAdmin"
+    android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:padding="10dp"
+    android:layout_marginBottom="5dp"
+    >
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="Matter"
+        android:padding="5dp"
+        android:layout_weight="1"
+         />
+
+    <TextView
+        android:id="@+id/eidWhat"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:hint="None"
+        android:layout_weight="1"
+         />
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        >
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Where"
+            android:padding="5dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/eidLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:hint="Position"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/btnMapOpen"
+        android:layout_height="wrap_content"
+        android:text="Go to MAP">
+
+    </Button>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:padding="10dp"
+    android:layout_margin="10dp"
+    android:id="@+id/AdditionalMatter"
+    android:background="@drawable/bordered_rectangle">
+
+</TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|bottom"
+        android:layout_margin="15dp"
+        android:id="@+id/btnBack"
+        android:text="GOBack"
+        android:layout_marginBottom="20dp"
+        />
+    </LinearLayout>
+</LinearLayout>

@@ -2,9 +2,13 @@ package com.example.alertapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -35,14 +39,13 @@ import java.sql.Statement;
 import androidx.core.app.ActivityCompat;
 
 
-
-public class alert extends AppCompatActivity {
-
+public class alert extends AppCompatActivity implements LocationListener {
+    String latitude,longitude;
     TextView actionTittle;
     ImageView actionIcon;
-    Button btnAlert, btnGps, btnMention;
+    Button btnAlert, btnGps, btnMention,button2;
     EditText edWhat, edMention, edAdd;
-    String uri = "geo:0,0?q=india";
+    String loco = "";
     //Connection con;
 
     @Override
@@ -77,18 +80,45 @@ public class alert extends AppCompatActivity {
         edMention = (EditText) findViewById(R.id.idMention);
         edAdd = (EditText) findViewById(R.id.idAdd);
         btnGps = (Button) findViewById(R.id.btnGps);
-        btnAlert.setOnClickListener(new View.OnClickListener() {
+        btnGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri gmmIntentUri = Uri.parse(uri);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
+                Toast.makeText(alert.this, "hai", Toast.LENGTH_SHORT).show();
+                btnMention.setEnabled(false);
+
+                ActivityCompat.requestPermissions(alert.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+                if (ActivityCompat.checkSelfPermission(alert.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                {
+        /*
+        tvLatitud.setText("No se tienen permisos");
+        ...
+         */
+                    Toast.makeText(alert.this, "no", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }else
+                {
+                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                     latitude = location.getLatitude()+" ";
+                     longitude =  location.getLongitude()+" ";
                 }
+                Toast.makeText(alert.this, latitude+"", Toast.LENGTH_SHORT).show();
+                loco=latitude+" "+longitude;
+                edMention.setText("lat "+ latitude+" "+" long "+longitude);
+                edMention.setEnabled(false);
             }
         });
         btnMention = (Button) findViewById(R.id.btnManual);
+        btnMention.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnAlert.setEnabled(false);
+                String localVal = edMention.getText().toString();
+                loco=localVal;
+            }
+        });
         btnAlert = (Button) findViewById(R.id.btnAlert);
 
         /**con = DatabaseConnection.ConnectDB();
@@ -102,6 +132,33 @@ public class alert extends AppCompatActivity {
                 AlertDB.execute("");
             }
         });
+        button2=findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(alert.this,AlertActivity.class));
+            }
+        });
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 
@@ -164,10 +221,11 @@ public class alert extends AppCompatActivity {
 
             try
             {
+
                 Connection con = new ConnectionClass().CONN();
                 @SuppressLint("WrongThread") String sendWhat = edWhat.getText().toString();
-                @SuppressLint("WrongThread") String sendWhere = "10250540";
-                @SuppressLint("WrongThread") String sendMore = "Nothing";
+                @SuppressLint("WrongThread") String sendWhere = loco;
+                @SuppressLint("WrongThread") String sendMore = edAdd.getText().toString();
                 String query = "insert into AlertInfo (what,location,additional) values ('" + sendWhat + "','" + sendWhere + "','" + sendMore + "');";
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate(query);
